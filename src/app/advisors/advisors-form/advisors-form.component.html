@@ -1,0 +1,12 @@
+<form [formGroup]="advisorsForm">
+  <app-account-info
+    [formGroup]="advisorsForm"
+    (accountNumberValidity)="onAccountNumberValidity($event)"
+  ></app-account-info>
+
+  <app-advisors-info-preview
+    [formGroup]="advisorsForm"
+  ></app-advisors-info-preview>
+
+  <app-advisors-info *ngIf="showAdvisorsInfo"></app-advisors-info>
+</form>
