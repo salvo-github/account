@@ -1,0 +1,10 @@
+<ng-container [formGroup]="advisor">
+  <div class="advisor--inputs">
+    <input
+      *ngFor="let prop of getAdvisorPropertyOrder()"
+      type="text"
+      [placeholder]="getAdvisorPropertyLabel(prop)"
+      [formControlName]="prop"
+    />
+  </div>
+</ng-container>

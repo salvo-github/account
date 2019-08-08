@@ -1,12 +1,17 @@
-<form [formGroup]="advisorsForm">
-  <app-account-info
-    [formGroup]="advisorsForm"
-    (accountNumberValidity)="onAccountNumberValidity($event)"
-  ></app-account-info>
+<div class="advisors-form_container">
+  <form [formGroup]="advisorsForm">
+    <app-account-info
+      [formGroup]="advisorsForm"
+      (accountNumberValidity)="onAccountNumberValidity($event)"
+    ></app-account-info>
 
-  <app-advisors-info-preview
-    [formGroup]="advisorsForm"
-  ></app-advisors-info-preview>
+    <app-advisors-info-preview
+      [formGroup]="advisorsForm"
+    ></app-advisors-info-preview>
 
-  <app-advisors-info *ngIf="showAdvisorsInfo"></app-advisors-info>
-</form>
+    <div *ngIf="showAdvisorsInfo">
+      <hr />
+      <app-advisors-info [formGroup]="advisorsForm"></app-advisors-info>
+    </div>
+  </form>
+</div>

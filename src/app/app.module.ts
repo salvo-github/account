@@ -8,6 +8,7 @@ import { AdvisorsInfoComponent } from './advisors/advisors-form/advisors-info/ad
 import { AdvisorsComponent } from './advisors/advisors.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AdvisorComponent } from './advisors/advisors-form/advisors-info/advisor/advisor.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { AppComponent } from './app.component';
     AccountInfoComponent,
     AdvisorsComponent,
     AdvisorsInfoComponent,
-    AdvisorsInfoPreviewComponent
+    AdvisorsInfoPreviewComponent,
+    AdvisorComponent
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [],

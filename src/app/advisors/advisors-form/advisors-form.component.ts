@@ -19,6 +19,10 @@ export class AdvisorsFormComponent implements OnInit {
 
   ngOnInit() {
     this.advisorsForm = new FormGroup({});
+
+    this.advisorsForm.valueChanges.subscribe((value) => {
+      console.log(value);
+    });
   }
 
   onAccountNumberValidity($event) {

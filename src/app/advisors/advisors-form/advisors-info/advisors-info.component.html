@@ -1,1 +1,6 @@
-<p>advisors-info works!</p>
+<ng-container [formGroup]="formGroup">
+  <app-advisor
+    *ngFor="let advisor of advisorsFormArray.controls; let i = index"
+    [advisor]="advisor"
+  ></app-advisor>
+</ng-container>
