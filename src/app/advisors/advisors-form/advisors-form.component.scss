@@ -10,6 +10,11 @@
   border-style: solid;
 }
 
+.advisors-form__account-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
 button[type='submit'] {
   float: right;
 }

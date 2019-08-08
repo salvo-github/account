@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormGroup,
-  RequiredValidator,
-  FormControl,
-  Validators
-} from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { Account } from './account.model';
+import { AccountsService } from './accounts.service';
 
 @Component({
   selector: 'app-advisors-form',
@@ -12,24 +9,27 @@ import {
   styleUrls: ['./advisors-form.component.scss']
 })
 export class AdvisorsFormComponent implements OnInit {
-  public advisorsForm: FormGroup;
-  public showAdvisorsInfo = false;
+  public accountForm: FormGroup;
 
-  constructor() {}
+  constructor(private accountsService: AccountsService) {}
 
   ngOnInit() {
-    this.advisorsForm = new FormGroup({});
+    this.accountForm = this.accountsService.getAccountForm();
 
-    this.advisorsForm.valueChanges.subscribe((value) => {
+    this.accountForm.valueChanges.subscribe((value) => {
       console.log(value);
     });
   }
 
-  onAccountNumberValidity($event) {
-    this.showAdvisorsInfo = $event;
+  public isValid(formControlName: string): boolean {
+    return this.accountForm.get(formControlName).valid;
   }
 
   public onSubmit() {
-    console.log(this.advisorsForm);
+    console.log(this.accountForm);
+  }
+
+  public getLabel(property: string): string {
+    return Account.getLabel(property);
   }
 }

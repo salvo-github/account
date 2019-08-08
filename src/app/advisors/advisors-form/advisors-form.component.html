@@ -1,19 +1,20 @@
 <div class="advisors-form_container">
-  <form [formGroup]="advisorsForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="accountForm" (ngSubmit)="onSubmit()">
     <div class="advisors-form__account-wrapper">
-      <app-account-info
-        [formGroup]="advisorsForm"
-        (accountNumberValidity)="onAccountNumberValidity($event)"
-      ></app-account-info>
+      <label
+        >{{ getLabel('serial') }}:<input type="text" formControlName="serial"
+      /></label>
 
-      <app-advisors-info-preview
-        [formGroup]="advisorsForm"
-      ></app-advisors-info-preview>
+      <label
+        ><input type="checkbox" formControlName="preview" />{{
+          getLabel('preview')
+        }}</label
+      >
     </div>
-    <div *ngIf="showAdvisorsInfo">
+    <div *ngIf="isValid('serial')">
       <hr />
-      <app-advisors-info [formGroup]="advisorsForm"></app-advisors-info>
+      <app-advisors-info [formGroup]="accountForm"></app-advisors-info>
     </div>
-    <button type="submit" [disabled]="advisorsForm.invalid">Submit</button>
+    <button type="submit" [disabled]="accountForm.invalid">Submit</button>
   </form>
 </div>
