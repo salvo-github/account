@@ -13,7 +13,9 @@
     </div>
     <div *ngIf="isValid('serial')">
       <hr />
-      <app-advisors-info [formGroup]="accountForm"></app-advisors-info>
+      <app-advisors-info
+        [advisorsFormArray]="accountForm.get('advisors')"
+      ></app-advisors-info>
     </div>
     <button type="submit" [disabled]="accountForm.invalid">Submit</button>
   </form>
