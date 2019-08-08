@@ -28,4 +28,8 @@ export class AdvisorsFormComponent implements OnInit {
   onAccountNumberValidity($event) {
     this.showAdvisorsInfo = $event;
   }
+
+  public onSubmit() {
+    console.log(this.advisorsForm);
+  }
 }

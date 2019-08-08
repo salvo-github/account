@@ -1,6 +1,16 @@
 <ng-container [formGroup]="formGroup">
-  <app-advisor
-    *ngFor="let advisor of advisorsFormArray.controls; let i = index"
-    [advisor]="advisor"
-  ></app-advisor>
+  <h4>Advisors:</h4>
+  <div class="advisors__row" *ngFor="let advisor of advisors; let i = index">
+    <app-advisor
+      [advisor]="advisor"
+      (advisorFormGruoupCreated)="onAdvisorFormGroupCreated($event)"
+    ></app-advisor>
+    <a [routerLink]="" (click)="removeAdvisorByIndex(i)">Delete</a>
+  </div>
 </ng-container>
+<a
+  [routerLink]=""
+  (click)="addNewAdvisor()"
+  [ngClass]="{ 'a--disabled': isAdvisorsAmountLimitReached() }"
+  >Add new advisor</a
+>

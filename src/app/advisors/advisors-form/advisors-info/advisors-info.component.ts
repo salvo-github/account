@@ -40,22 +40,29 @@ export class AdvisorsInfoComponent implements OnInit {
   private initFormArray(): void {
     const advisorsControl = new FormArray([]);
     this.formGroup.addControl('advisors', advisorsControl);
-
-    this.addAdvisorsToFormArray();
   }
 
-  private addAdvisorsToFormArray() {
-    for (const advisor of this.advisors) {
-      const advisorPropsFormGroup = new FormGroup({});
-      for (const key in advisor) {
-        if (advisor.hasOwnProperty(key)) {
-          const advisorPropControl = new FormControl(advisor[key], [
-            Validators.required
-          ]);
-          advisorPropsFormGroup.addControl(key, advisorPropControl);
-        }
-      }
-      this.advisorsFormArray.push(advisorPropsFormGroup);
+  public addNewAdvisor(): void {
+    if (this.isAdvisorsAmountLimitReached()) {
+      return;
     }
+    const advisor = new Advisor();
+    this.advisors.push(advisor);
+  }
+
+  public removeAdvisorByIndex(index: number): void {
+    this.advisors.splice(index, 1);
+    this.advisorsFormArray.removeAt(index);
+  }
+
+  public onAdvisorFormGroupCreated(advisorFormGroup: FormGroup): void {
+    this.advisorsFormArray.push(advisorFormGroup);
+  }
+
+  public isAdvisorsAmountLimitReached(): boolean {
+    if (this.advisors.length < 6) {
+      return false;
+    }
+    return true;
   }
 }

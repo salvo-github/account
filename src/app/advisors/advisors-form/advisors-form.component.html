@@ -1,17 +1,19 @@
 <div class="advisors-form_container">
-  <form [formGroup]="advisorsForm">
-    <app-account-info
-      [formGroup]="advisorsForm"
-      (accountNumberValidity)="onAccountNumberValidity($event)"
-    ></app-account-info>
+  <form [formGroup]="advisorsForm" (ngSubmit)="onSubmit()">
+    <div class="advisors-form__account-wrapper">
+      <app-account-info
+        [formGroup]="advisorsForm"
+        (accountNumberValidity)="onAccountNumberValidity($event)"
+      ></app-account-info>
 
-    <app-advisors-info-preview
-      [formGroup]="advisorsForm"
-    ></app-advisors-info-preview>
-
+      <app-advisors-info-preview
+        [formGroup]="advisorsForm"
+      ></app-advisors-info-preview>
+    </div>
     <div *ngIf="showAdvisorsInfo">
       <hr />
       <app-advisors-info [formGroup]="advisorsForm"></app-advisors-info>
     </div>
+    <button type="submit" [disabled]="advisorsForm.invalid">Submit</button>
   </form>
 </div>

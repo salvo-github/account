@@ -1,8 +1,15 @@
 .advisors-form_container {
   padding: 1em;
-  min-width: auto;
+  display: inline-block;
+  border-style: solid;
+  border-width: 0.01em;
+  width: 40em;
 }
 
 .advisors-form_container hr {
   border-style: solid;
+}
+
+button[type='submit'] {
+  float: right;
 }
