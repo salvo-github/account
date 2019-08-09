@@ -16,7 +16,7 @@ export class AccountsService {
 
   constructor(private fb: FormBuilder, private httpClient: HttpClient) {}
 
-  public fetchAccountById($accountId) {
+  public fetchAccountById($accountId): void {
     const url = `/assets/${$accountId}.json`;
 
     this.httpClient.get<Account>(url).subscribe(
@@ -46,7 +46,7 @@ export class AccountsService {
     return this.accountForm;
   }
 
-  private generateAccountForm(account: Account = new Account()) {
+  private generateAccountForm(account: Account = new Account()): void {
     this.accountForm = this.fb.group({
       serial: [
         account.serial,
@@ -57,7 +57,7 @@ export class AccountsService {
   }
 
   /** generate advisors form array and if advisors is empty, add a new advisor */
-  private generateAdvisorsArray(account: Account) {
+  private generateAdvisorsArray(account: Account): void {
     const advisorsFormArray: FormArray = this.fb.array(
       account.advisors.map((advisor) => this.generateAdvisorForm(advisor)),
       [
@@ -73,7 +73,7 @@ export class AccountsService {
     }
   }
 
-  public generateAdvisorForm(advisor: Advisor) {
+  public generateAdvisorForm(advisor: Advisor): FormGroup {
     return this.fb.group({
       email: [advisor.email, Validators.required],
       fullName: [advisor.fullName, Validators.required],
@@ -81,12 +81,17 @@ export class AccountsService {
     });
   }
 
-  public addAdvisorToAdvisorsArray(advisor?: Advisor) {
+  public addAdvisorToAdvisorsArray(advisor?: Advisor): void {
     if (!advisor) {
       advisor = new Advisor();
     }
     const advisorFormGroup = this.generateAdvisorForm(advisor);
     const advisorsFormArray = this.accountForm.get('advisors') as FormArray;
     advisorsFormArray.push(advisorFormGroup);
+  }
+
+  public removeAdvisorFromAdvisorsArray(index: number): void {
+    const advisorsFormArray = this.accountForm.get('advisors') as FormArray;
+    advisorsFormArray.removeAt(index);
   }
 }

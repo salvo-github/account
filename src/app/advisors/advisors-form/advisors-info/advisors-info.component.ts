@@ -23,13 +23,11 @@ export class AdvisorsInfoComponent implements OnInit {
   }
 
   public addNewAdvisor(): void {
-    const advisor = new Advisor();
-    const advisorFormGroup = this.accountsService.generateAdvisorForm(advisor);
-    this.advisorsFormArray.push(advisorFormGroup);
+    this.accountsService.addAdvisorToAdvisorsArray();
   }
 
   public removeAdvisorByIndex(index: number): void {
-    this.advisorsFormArray.removeAt(index);
+    this.accountsService.removeAdvisorFromAdvisorsArray(index);
   }
 
   public showDelete(): boolean {

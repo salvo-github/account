@@ -20,15 +20,15 @@ export class AdvisorsFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // this must be in a resolver
     const accountId = this.route.snapshot.paramMap.get('accountId');
+    this.accountsService.fetchAccountById(accountId);
 
     this.accountFormSubscription = this.accountsService
       .getAccountFormObservable()
       .subscribe((accountFormGroup: FormGroup) => {
         this.accountForm = accountFormGroup;
       });
-
-    this.accountsService.fetchAccountById(accountId);
 
     this.accountForm.valueChanges.subscribe((value) => {
       console.log(value);
