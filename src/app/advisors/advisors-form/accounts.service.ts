@@ -21,8 +21,11 @@ export class AccountsService {
 
     this.httpClient.get<Account>(url).subscribe(
       (account) => {
-        this.initAccountForm(account);
-        this.accountFormBehaviorSubject.next(this.accountForm);
+        // server fetch time simulation
+        setTimeout(() => {
+          this.initAccountForm(account);
+          this.accountFormBehaviorSubject.next(this.accountForm);
+        }, 1000);
       },
       (err) => {
         // this.initAccountForm();
