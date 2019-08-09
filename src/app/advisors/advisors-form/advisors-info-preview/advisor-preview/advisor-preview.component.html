@@ -1,0 +1,7 @@
+<ng-container [formGroup]="advisor">
+  <div class="advisor--inputs">
+    <span *ngFor="let prop of getAdvisorPropertyOrder()"
+      >{{ advisor.get(prop).value }}
+    </span>
+  </div>
+</ng-container>

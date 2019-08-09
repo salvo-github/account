@@ -10,17 +10,11 @@ import { Advisor } from './advisor/advisor.model';
   styleUrls: ['./advisors-info.component.scss']
 })
 export class AdvisorsInfoComponent implements OnInit {
-  public advisors: Advisor[];
-
   @Input() public advisorsFormArray: FormArray;
 
   constructor(private accountsService: AccountsService) {}
 
-  ngOnInit() {
-    if (!this.advisorsFormArray.length) {
-      this.addNewAdvisor();
-    }
-  }
+  ngOnInit() {}
 
   public addNewAdvisor(): void {
     this.accountsService.addAdvisorToAdvisorsArray();

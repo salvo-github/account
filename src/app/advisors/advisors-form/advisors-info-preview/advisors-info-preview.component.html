@@ -1,0 +1,7 @@
+<h4>Advisors:</h4>
+<div
+  class="advisors__row"
+  *ngFor="let advisor of advisorsFormArray.controls; let i = index"
+>
+  <app-advisor-preview [advisor]="advisor"></app-advisor-preview>
+</div>

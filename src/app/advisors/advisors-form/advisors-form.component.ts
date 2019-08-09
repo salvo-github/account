@@ -29,10 +29,6 @@ export class AdvisorsFormComponent implements OnInit, OnDestroy {
       .subscribe((accountFormGroup: FormGroup) => {
         this.accountForm = accountFormGroup;
       });
-
-    this.accountForm.valueChanges.subscribe((value) => {
-      console.log(value);
-    });
   }
 
   ngOnDestroy() {
@@ -49,5 +45,9 @@ export class AdvisorsFormComponent implements OnInit, OnDestroy {
 
   public getLabel(property: string): string {
     return Account.getLabel(property);
+  }
+
+  public isPreviewEnabled(): boolean {
+    return this.accountForm.get('preview').value;
   }
 }

@@ -14,8 +14,14 @@
     <div *ngIf="isValid('serial')">
       <hr />
       <app-advisors-info
+        *ngIf="!isPreviewEnabled(); else previewEnabled"
         [advisorsFormArray]="accountForm.get('advisors')"
       ></app-advisors-info>
+      <ng-template #previewEnabled>
+        <app-advisors-info-preview
+          [advisorsFormArray]="accountForm.get('advisors')"
+        ></app-advisors-info-preview>
+      </ng-template>
     </div>
     <button type="submit" [disabled]="accountForm.invalid">Submit</button>
   </form>
