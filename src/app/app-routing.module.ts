@@ -8,7 +8,8 @@ const routes: Routes = [
     path: 'advisors',
     children: [
       { path: '', redirectTo: 'new', pathMatch: 'full' },
-      { path: 'new', component: AdvisorsFormComponent }
+      { path: 'new', component: AdvisorsFormComponent },
+      { path: 'view/:accountId', component: AdvisorsFormComponent }
     ]
   }
 ];

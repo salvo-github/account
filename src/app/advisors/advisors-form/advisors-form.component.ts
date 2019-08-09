@@ -1,24 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Account } from './account.model';
 import { AccountsService } from './accounts.service';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-advisors-form',
   templateUrl: './advisors-form.component.html',
   styleUrls: ['./advisors-form.component.scss']
 })
-export class AdvisorsFormComponent implements OnInit {
+export class AdvisorsFormComponent implements OnInit, OnDestroy {
   public accountForm: FormGroup;
+  private accountFormSubscription: Subscription;
 
-  constructor(private accountsService: AccountsService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private accountsService: AccountsService
+  ) {}
 
   ngOnInit() {
-    this.accountForm = this.accountsService.getAccountForm();
+    const accountId = this.route.snapshot.paramMap.get('accountId');
+
+    this.accountFormSubscription = this.accountsService
+      .getAccountFormObservable()
+      .subscribe((accountFormGroup: FormGroup) => {
+        this.accountForm = accountFormGroup;
+      });
+
+    this.accountsService.fetchAccountById(accountId);
 
     this.accountForm.valueChanges.subscribe((value) => {
       console.log(value);
     });
+  }
+
+  ngOnDestroy() {
+    this.accountFormSubscription.unsubscribe();
   }
 
   public isValid(formControlName: string): boolean {

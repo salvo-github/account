@@ -1,0 +1,30 @@
+{
+  "serial": "12345678",
+  "advisors": [
+    {
+      "email": "advisor1@company.com",
+      "fullName": "John Doe",
+      "accessCode": "12345"
+    },
+    {
+      "email": "advisor2@company.com",
+      "fullName": "John Roe",
+      "accessCode": "23456"
+    },
+    {
+      "email": "advisor3@company.com",
+      "fullName": "Jane Doe",
+      "accessCode": "34567"
+    },
+    {
+      "email": "advisor4@company.com",
+      "fullName": "jane Roe",
+      "accessCode": "45678"
+    },
+    {
+      "email": "advisor5@company.com",
+      "fullName": "John Poe",
+      "accessCode": "56789"
+    }
+  ]
+}

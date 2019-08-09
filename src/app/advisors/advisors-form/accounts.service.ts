@@ -1,33 +1,76 @@
 import { Injectable } from '@angular/core';
 import { Account } from './account.model';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
 import { Advisor } from './advisors-info/advisor/advisor.model';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AccountsService {
-  constructor(private fb: FormBuilder) {}
+  private accountForm: FormGroup;
 
-  public getAccountForm(accountId?: string) {
-    if (accountId === undefined) {
-      return this.generateAccountForm();
+  private accountFormBehaviorSubject = new BehaviorSubject<FormGroup>(
+    this.initAccountForm()
+  );
+
+  constructor(private fb: FormBuilder, private httpClient: HttpClient) {}
+
+  public fetchAccountById($accountId) {
+    const url = `/assets/${$accountId}.json`;
+
+    this.httpClient.get<Account>(url).subscribe(
+      (account) => {
+        this.initAccountForm(account);
+        this.accountFormBehaviorSubject.next(this.accountForm);
+      },
+      (err) => {
+        // this.initAccountForm();
+        // this.accountFormBehaviorSubject.next(this.accountForm);
+      }
+    );
+  }
+
+  public getAccountFormObservable(): Observable<FormGroup> {
+    return this.accountFormBehaviorSubject.asObservable();
+  }
+
+  private initAccountForm(account?: Account): FormGroup {
+    if (!account) {
+      account = new Account();
     }
+    this.generateAccountForm(account);
+
+    this.generateAdvisorsArray(account);
+
+    return this.accountForm;
   }
 
   private generateAccountForm(account: Account = new Account()) {
-    return this.fb.group({
+    this.accountForm = this.fb.group({
       serial: [
         account.serial,
         [Validators.required, Validators.pattern(Account.getSerialPattern())]
       ],
-      preview: [account.preview],
-      advisors: this.fb.array(
-        account.advisors.map((advisor) => this.generateAdvisorForm(advisor)),
-        [
-          Validators.maxLength(Account.getMaxAmountAdvisors()),
-          Validators.required
-        ]
-      )
+      preview: [account.preview]
     });
+  }
+
+  /** generate advisors form array and if advisors is empty, add a new advisor */
+  private generateAdvisorsArray(account: Account) {
+    const advisorsFormArray: FormArray = this.fb.array(
+      account.advisors.map((advisor) => this.generateAdvisorForm(advisor)),
+      [
+        Validators.maxLength(Account.getMaxAmountAdvisors()),
+        Validators.required
+      ]
+    );
+
+    this.accountForm.addControl('advisors', advisorsFormArray);
+
+    if (!advisorsFormArray.length) {
+      this.addAdvisorToAdvisorsArray();
+    }
   }
 
   public generateAdvisorForm(advisor: Advisor) {
@@ -36,5 +79,14 @@ export class AccountsService {
       fullName: [advisor.fullName, Validators.required],
       accessCode: [advisor.accessCode, Validators.required]
     });
+  }
+
+  public addAdvisorToAdvisorsArray(advisor?: Advisor) {
+    if (!advisor) {
+      advisor = new Advisor();
+    }
+    const advisorFormGroup = this.generateAdvisorForm(advisor);
+    const advisorsFormArray = this.accountForm.get('advisors') as FormArray;
+    advisorsFormArray.push(advisorFormGroup);
   }
 }

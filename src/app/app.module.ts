@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { AdvisorsFormComponent } from './advisors/advisors-form/advisors-form.component';
 import { AdvisorComponent } from './advisors/advisors-form/advisors-info/advisor/advisor.component';
 import { AdvisorsInfoComponent } from './advisors/advisors-form/advisors-info/advisors-info.component';
@@ -16,7 +17,12 @@ import { AppComponent } from './app.component';
     AdvisorsInfoComponent,
     AdvisorComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
