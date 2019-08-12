@@ -6,6 +6,12 @@ enum AccountLabel {
   advisors = 'Advisors'
 }
 
+export enum AccountProperties {
+  serial = 'serial',
+  preview = 'preview',
+  advisors = 'advisors'
+}
+
 export class Account {
   public serial: string;
   public preview: boolean;

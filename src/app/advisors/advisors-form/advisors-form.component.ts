@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { Account } from './account.model';
+import { FormGroup, FormArray } from '@angular/forms';
+import { Account, AccountProperties } from './account.model';
 import { AccountsService } from './accounts.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 export class AdvisorsFormComponent implements OnInit, OnDestroy {
   public accountForm: FormGroup;
   private accountFormSubscription: Subscription;
+  public accountProperties = AccountProperties;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,6 +38,10 @@ export class AdvisorsFormComponent implements OnInit, OnDestroy {
 
   public isValid(formControlName: string): boolean {
     return this.accountForm.get(formControlName).valid;
+  }
+
+  public getAdvisorsFormArray(): FormArray {
+    return this.accountsService.getAdvisorsFormArray();
   }
 
   public onSubmit() {

@@ -1,12 +1,5 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output
-} from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Advisor } from './advisor.model';
 
 @Component({
@@ -14,13 +7,12 @@ import { Advisor } from './advisor.model';
   templateUrl: './advisor.component.html',
   styleUrls: ['./advisor.component.scss']
 })
-export class AdvisorComponent implements OnInit, AfterViewInit {
+export class AdvisorComponent implements OnInit {
   @Input() public advisor: FormGroup;
 
   constructor() {}
 
   ngOnInit() {}
-  ngAfterViewInit() {}
 
   public getAdvisorPropertyLabel(property): string {
     return Advisor.getLabel(property);

@@ -2,24 +2,27 @@
   <form [formGroup]="accountForm" (ngSubmit)="onSubmit()">
     <div class="advisors-form__account-wrapper">
       <label
-        >{{ getLabel('serial') }}:<input type="text" formControlName="serial"
+        >{{ getLabel(accountProperties.serial) }}:<input
+          type="text"
+          [formControlName]="accountProperties.serial"
       /></label>
 
       <label
-        ><input type="checkbox" formControlName="preview" />{{
-          getLabel('preview')
-        }}</label
+        ><input
+          type="checkbox"
+          [formControlName]="accountProperties.preview"
+        />{{ getLabel(accountProperties.preview) }}</label
       >
     </div>
     <div *ngIf="isValid('serial')">
       <hr />
       <app-advisors-info
         *ngIf="!isPreviewEnabled(); else previewEnabled"
-        [advisorsFormArray]="accountForm.get('advisors')"
+        [advisorsFormArray]="getAdvisorsFormArray()"
       ></app-advisors-info>
       <ng-template #previewEnabled>
         <app-advisors-info-preview
-          [advisorsFormArray]="accountForm.get('advisors')"
+          [advisorsFormArray]="getAdvisorsFormArray()"
         ></app-advisors-info-preview>
       </ng-template>
     </div>

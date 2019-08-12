@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Account } from './account.model';
-import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
-import { Advisor } from './advisors-info/advisor/advisor.model';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Account, AccountProperties } from './account.model';
+import { Advisor } from './advisors-info/advisor/advisor.model';
 
 @Injectable({ providedIn: 'root' })
 export class AccountsService {
@@ -16,22 +15,19 @@ export class AccountsService {
 
   constructor(private fb: FormBuilder, private httpClient: HttpClient) {}
 
-  public fetchAccountById($accountId): void {
-    const url = `/assets/${$accountId}.json`;
+  // if the accountId it's not present on server the empty form it's displayed
+  // a better way it's to show a 404 but it's not required in the specification
+  public fetchAccountById(accountId): void {
+    const url = `/assets/${accountId}.json`;
 
-    this.httpClient.get<Account>(url).subscribe(
-      (account) => {
-        // server fetch time simulation
-        setTimeout(() => {
-          this.initAccountForm(account);
-          this.accountFormBehaviorSubject.next(this.accountForm);
-        }, 1000);
-      },
-      (err) => {
-        // this.initAccountForm();
-        // this.accountFormBehaviorSubject.next(this.accountForm);
-      }
-    );
+    // if the http request return 404 the last value (new Account()) will take from accountFormBehaviorSubject
+    this.httpClient.get<Account>(url).subscribe((account) => {
+      // server fetch time simulation
+      setTimeout(() => {
+        this.initAccountForm(account);
+        this.accountFormBehaviorSubject.next(this.accountForm);
+      }, 1000);
+    });
   }
 
   public getAccountFormObservable(): Observable<FormGroup> {
@@ -49,34 +45,36 @@ export class AccountsService {
     return this.accountForm;
   }
 
-  private generateAccountForm(account: Account = new Account()): void {
+  private generateAccountForm(account: Account): void {
     this.accountForm = this.fb.group({
-      serial: [
-        account.serial,
+      [AccountProperties.serial]: [
+        account[AccountProperties.serial],
         [Validators.required, Validators.pattern(Account.getSerialPattern())]
       ],
-      preview: [account.preview]
+      [AccountProperties.preview]: [account[AccountProperties.preview]]
     });
   }
 
   /** generate advisors form array and if advisors is empty, add a new advisor */
   private generateAdvisorsArray(account: Account): void {
     const advisorsFormArray: FormArray = this.fb.array(
-      account.advisors.map((advisor) => this.generateAdvisorForm(advisor)),
+      account[AccountProperties.advisors].map((advisor) =>
+        this.generateAdvisorFormGroup(advisor)
+      ),
       [
         Validators.maxLength(Account.getMaxAmountAdvisors()),
         Validators.required
       ]
     );
 
-    this.accountForm.addControl('advisors', advisorsFormArray);
+    this.accountForm.addControl(AccountProperties.advisors, advisorsFormArray);
 
     if (!advisorsFormArray.length) {
       this.addAdvisorToAdvisorsArray();
     }
   }
 
-  public generateAdvisorForm(advisor: Advisor): FormGroup {
+  private generateAdvisorFormGroup(advisor: Advisor): FormGroup {
     return this.fb.group({
       email: [advisor.email, Validators.required],
       fullName: [advisor.fullName, Validators.required],
@@ -84,17 +82,21 @@ export class AccountsService {
     });
   }
 
+  public getAdvisorsFormArray(): FormArray {
+    return this.accountForm.get(AccountProperties.advisors) as FormArray;
+  }
+
   public addAdvisorToAdvisorsArray(advisor?: Advisor): void {
     if (!advisor) {
       advisor = new Advisor();
     }
-    const advisorFormGroup = this.generateAdvisorForm(advisor);
-    const advisorsFormArray = this.accountForm.get('advisors') as FormArray;
+    const advisorFormGroup = this.generateAdvisorFormGroup(advisor);
+    const advisorsFormArray = this.getAdvisorsFormArray();
     advisorsFormArray.push(advisorFormGroup);
   }
 
   public removeAdvisorFromAdvisorsArray(index: number): void {
-    const advisorsFormArray = this.accountForm.get('advisors') as FormArray;
+    const advisorsFormArray = this.getAdvisorsFormArray();
     advisorsFormArray.removeAt(index);
   }
 }

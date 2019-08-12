@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { Account } from '../account.model';
 import { AccountsService } from '../accounts.service';
-import { Advisor } from './advisor/advisor.model';
 
 @Component({
   selector: 'app-advisors-info',
